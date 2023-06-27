@@ -1,0 +1,398 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Федеральная нотариальная палата API
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /dovers/search/notarius:
+    post:
+      summary: Проверка доверенности, заверенной нотариусом
+      operationId: searchByNotarius
+      tags:
+        - Dovers
+      parameters:
+        - name: token
+          in: query
+          description: Капча
+          required: true
+          schema:
+            type: string
+            maximum: 5
+
+        - name: date
+          in: query
+          description: Дата удостоверения
+          required: true
+          schema:
+            type: string
+
+        - name: regnum
+          in: query
+          description: Реестровый номер
+          required: true
+          schema:
+            type: string
+
+        - name: notary
+          in: query
+          description: id нотариуса
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Информация о доверенности
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Dovers_message"
+        '500':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /dovers/search/consul:
+    post:
+      summary: Проверка доверенности, заверенной работником консульского учреждения
+      operationId: searchByConsul
+      tags:
+        - Dovers
+      parameters:
+        - name: token
+          in: query
+          description: Капча
+          required: true
+          schema:
+            type: string
+            maximum: 5
+
+        - name: date
+          in: query
+          description: Дата удостоверения
+          required: true
+          schema:
+            type: string
+
+        - name: regnum
+          in: query
+          description: Реестровый номер
+          required: true
+          schema:
+            type: string
+
+        - name: consul
+          in: query
+          description: ФИО консула
+          required: true
+          schema:
+            type: string
+
+        - name: country
+          in: query
+          description: id страны
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Информация о доверенности
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Dovers_message"
+        '500':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /dovers/search/official:
+    post:
+      summary: Проверка доверенности, заверенной должностным лицом органа местного самоуправления
+      operationId: searchByOfficial
+      tags:
+        - Dovers
+      parameters:
+        - name: token
+          in: query
+          description: Капча
+          required: true
+          schema:
+            type: string
+            maximum: 5
+
+        - name: date
+          in: query
+          description: Дата удостоверения
+          required: true
+          schema:
+            type: string
+
+        - name: regnum
+          in: query
+          description: Реестровый номер
+          required: true
+          schema:
+            type: string
+
+        - name: official
+          in: query
+          description: ФИО должностного лица органа местного самоуправления
+          required: true
+          schema:
+            type: string
+
+        - name: region
+          in: query
+          description: id региона
+          required: true
+          schema:
+            type: string            
+            
+      responses:
+        '200':
+          description: Информация о доверенности
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Dovers_message"
+        '500':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /captcha:
+    get:
+      summary: Генерация капчи для выполнения действий, требующих токен
+      operationId: getCaptcha
+      tags: 
+        - Dovers
+      responses:
+        '200':
+          description: Ссылка с капчей
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Captcha"
+        '500':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /dovers/countries:
+    get:
+      summary: Получение списка id стран
+      operationId: getCountries
+      tags:
+        - Dovers
+      responses:
+        '200':
+          description: Список стран с id
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Countries"
+        '500':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /dovers/regions:
+    get:
+      summary: Получение списка id регионов
+      operationId: getRegions
+      tags:
+        - Dovers
+      responses:
+        '200':
+          description: Список регионов с id
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Regions"
+        '500':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /dovers/notarys:
+    get:
+      summary: Поиск нотариуса
+      operationId: getNotarys
+      tags:
+        - Dovers
+      responses:
+        '200':
+          description: Список нотариусов с id
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Notarys"
+        '500':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /probates/search:
+    post:
+      summary: Поиск наследователей
+      operationId: search
+      tags:
+        - Probates
+      responses:
+        '200':
+          description: Список наследователей
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Probates"
+        '500':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /probates/wanted:
+    get:
+      summary: Розыск наследников
+      operationId: wanted
+      tags:
+        - Probates
+      responses:
+        '200':
+          description: Список наследователей
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Probates"
+        '500':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Dovers_message:
+      type: object
+      required:
+        - error
+        - description
+        - documents
+      properties:
+        error:
+          type: string
+        description:
+          type: string
+        documents:
+          type: string
+
+    Captcha:
+      type: object
+      required:
+        - URL
+      properties:
+        URL:
+          type: string
+
+    Country:
+      type: object
+      required:
+        - code
+        - name
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+
+    Countries:
+      type: array
+      items:
+        $ref: "#/components/schemas/Country"
+
+    Region:
+      type: object
+      required:
+        - code
+        - name
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+
+    Regions:
+      type: array
+      items:
+        $ref: "#/components/schemas/Region"
+
+    Notary:
+      type: object
+      required:
+        - id
+        - status
+        - info
+        - fullname
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        info:
+          type: string
+        fullname:
+          type: string
+
+    Notarys:
+      type: array
+      items:
+        $ref: "#/components/schemas/Notary"
+
+    Probates:
+      type: object
+      required:
+        - count
+        - records
+      properties:
+        count:
+          type: integer
+        records:
+          type: string
+
+    Wanted:
+      type: object
+      required:
+        - region
+        - items
+      properties:
+        region:
+          type: string
+        items:
+          type: string
+
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string

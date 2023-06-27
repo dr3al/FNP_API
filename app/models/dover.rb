@@ -1,0 +1,2 @@
+class Dover < ApplicationRecord
+end
